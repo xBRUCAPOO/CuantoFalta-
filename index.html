@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>¿Cuánto Falta? · Panel de jornada escolar</title>
+<meta name="description" content="Contador en tiempo real del tiempo restante hasta la salida y el próximo recreo." />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Fondo animado: partículas / líneas tecnológicas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <!-- Marco tipo HUD en las esquinas -->
+  <span class="corner corner--tl" aria-hidden="true"></span>
+  <span class="corner corner--tr" aria-hidden="true"></span>
+  <span class="corner corner--bl" aria-hidden="true"></span>
+  <span class="corner corner--br" aria-hidden="true"></span>
+
+  <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false" aria-label="Activar sonido de avisos">
+    <svg class="icon icon--on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+      <path d="M16.5 8.5a5 5 0 0 1 0 7"/>
+      <path d="M19 6a8 8 0 0 1 0 12"/>
+    </svg>
+    <svg class="icon icon--off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M4 9v6h4l5 4V5L8 9H4z"/>
+      <path d="M17 9l5 6M22 9l-5 6"/>
+    </svg>
+  </button>
+
+  <main class="app">
+
+    <header class="topbar">
+      <p class="date" id="date">—</p>
+      <p class="clock" id="clock"><span id="clock-h">00</span><span class="colon">:</span><span id="clock-m">00</span><span class="colon">:</span><span id="clock-s">00</span></p>
+    </header>
+
+    <section class="stage" id="stage">
+
+      <!-- Contador principal: tiempo para la salida -->
+      <div class="ring-wrap" id="ring-wrap">
+        <svg class="ring" viewBox="0 0 320 320" id="ring-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7ee8ff" />
+              <stop offset="100%" stop-color="#3fa9d6" />
+            </linearGradient>
+            <linearGradient id="sweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#9ff6ff" stop-opacity="0.55" />
+              <stop offset="100%" stop-color="#9ff6ff" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="160" cy="160" r="140" />
+          <g id="ring-ticks" class="ring-ticks"></g>
+          <g class="ring-sweep">
+            <path d="M160 160 L160 24 A136 136 0 0 1 248 56 Z" fill="url(#sweepGrad)" />
+          </g>
+          <circle class="ring-progress" id="ring-progress" cx="160" cy="160" r="140" />
+        </svg>
+
+        <div class="ring-content">
+          <p class="eyebrow">Tiempo para salir</p>
+          <div class="big-time" id="exit-time">
+            <span class="unit"><span class="num" id="exit-h">00</span><span class="unit-label">h</span></span>
+            <span class="unit"><span class="num" id="exit-m">00</span><span class="unit-label">m</span></span>
+            <span class="unit"><span class="num" id="exit-s">00</span><span class="unit-label">s</span></span>
+          </div>
+          <p class="sub-status" id="exit-status"></p>
+        </div>
+      </div>
+
+      <!-- Contador secundario: próximo recreo -->
+      <div class="recess-panel" id="recess-panel">
+        <div class="recess-head">
+          <span class="recess-dot" id="recess-dot" aria-hidden="true"></span>
+          <p class="recess-label" id="recess-label">Próximo recreo</p>
+        </div>
+
+        <div class="recess-bar-track" aria-hidden="true">
+          <div class="recess-bar-fill" id="recess-fill"></div>
+        </div>
+
+        <div class="small-time" id="recess-time">
+          <span class="num" id="recess-h">00</span><span class="small-label">h</span>
+          <span class="num" id="recess-m">00</span><span class="small-label">m</span>
+          <span class="num" id="recess-s">00</span><span class="small-label">s</span>
+        </div>
+      </div>
+
+      <!-- Mensajes especiales: fin de semana / jornada finalizada -->
+      <div class="special-message" id="special-message" hidden aria-live="polite">
+        <p class="special-icon" id="special-icon">◆</p>
+        <p class="special-text" id="special-text"></p>
+      </div>
+
+    </section>
+
+    <footer class="footer">
+      <span>SISTEMA ESCOLAR</span><span class="dot-sep">·</span><span>TIEMPO REAL</span>
+    </footer>
+
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>
