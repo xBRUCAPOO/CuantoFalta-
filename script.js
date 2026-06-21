@@ -498,7 +498,7 @@
       for (const p of particulas) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(159, 246, 255, 0.55)";
+        ctx.fillStyle = "rgba(62, 115, 215, 0.55)";
         ctx.fill();
       }
 
